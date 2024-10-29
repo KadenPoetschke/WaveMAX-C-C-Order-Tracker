@@ -24,7 +24,7 @@ class LogWindow:
         self.display_log_content()
 
     def read_log_file(self):
-        with open('order.log', 'r') as file:
+        with open('data\order.log', 'r') as file:
             return file.readlines()
 
     def display_log_content(self):
