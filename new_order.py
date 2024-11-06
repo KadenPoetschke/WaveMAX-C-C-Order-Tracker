@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class NewOrderForm():
+class NewOrderForm:
     def __init__(self, root, add_order_callback):
         self.form_window = ctk.CTkToplevel(root)
         self.form_window.title("Add New Order")
