@@ -9,8 +9,9 @@ class LogWindow:
         self.log_window = ctk.CTkToplevel(root)
         self.log_window.title("Order Log")
         self.log_window.geometry("600x500")
-        self.log_window.attributes("-topmost", True)
         self.log_window.resizable(False, False)
+        self.log_window.attributes("-topmost", True)
+        self.log_window.after(100, lambda: self.log_window.attributes("-topmost", False))
 
         # Create a title label
         title_label = ctk.CTkLabel(self.log_window, text="Order Log", font=("Arial", 16))
