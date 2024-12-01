@@ -87,11 +87,13 @@ class OrderTrackerApp:
         self.orders.append([f"Cents Order #{cents_order}", f"C&C Order #{cc_order}"])
         logging.info(f"New order added: ['Cents Order #{cents_order}', 'C&C Order #{cc_order}']")
         self.update_scrollable_frame()
+        self.save_orders()
 
     def finish_order(self, index):
         logging.info(f"Order picked up: {self.orders[index]}")
         del self.orders[index]
         self.update_scrollable_frame()
+        self.save_orders()
 
     def update_scrollable_frame(self):
         for widget in self.scrollable_frame.winfo_children():
