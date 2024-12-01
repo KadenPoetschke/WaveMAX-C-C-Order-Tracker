@@ -1,3 +1,7 @@
+# Project: WaveMAX C&C Order Tracker
+# Author: Kaden Poetschke
+# Date Created: 10-26-2024
+
 import customtkinter as ctk
 import logging
 import os
