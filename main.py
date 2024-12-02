@@ -8,6 +8,7 @@ import os
 import pickle
 from new_order import NewOrderForm
 from log_window import LogWindow
+from version import check_for_updates, VersionChecker
 
 # Configure logging
 logging.basicConfig(filename='data\order.log', level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -110,4 +111,6 @@ class OrderTrackerApp:
 if __name__ == "__main__":
     app = ctk.CTk()
     order_tracker_app = OrderTrackerApp(app)
+    VCWindow = VersionChecker(app)
+    check_for_updates(VCWindow)
     app.mainloop()
