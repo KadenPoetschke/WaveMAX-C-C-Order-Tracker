@@ -6,10 +6,12 @@ import customtkinter as ctk
 import logging
 import os
 import pickle
-import time
 from new_order import NewOrderForm
 from log_window import LogWindow
 from version import check_for_updates, VersionChecker
+
+# Contstants
+from constants import APP_TITLE, APP_HEADER
 
 # Configure logging
 logging.basicConfig(filename='data\order.log', level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -17,8 +19,6 @@ logging.basicConfig(filename='data\order.log', level=logging.INFO, format='%(asc
 # Set the appearance mode and default color theme
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
-
-APP_TITLE = "Clean & Carry Orders"
 
 class OrderTrackerApp(ctk.CTk):
     def __init__(self):
@@ -29,7 +29,7 @@ class OrderTrackerApp(ctk.CTk):
         self.resizable(False, False)
 
         # Create a title label
-        title_label = ctk.CTkLabel(self, text=APP_TITLE, font=("Arial", 16))
+        title_label = ctk.CTkLabel(self, text=APP_HEADER, font=("Arial", 16))
         title_label.grid(row=0, column=0, pady=10, columnspan=2, sticky="nsew")
 
         # Create a button to open the NewOrderForm window

@@ -6,12 +6,11 @@ import sys
 import subprocess
 import customtkinter as ctk
 
+# Constants
+from constants import APP_VERSION, LATEST_RELEASE_URL, DOWNLOAD_DIR
+
 # https://github.com/KadenPoetschke/WaveMAX-C-C-Order-Tracker.git
 # https://api.github.com/repos/KadenPoetschke/WaveMAX-C-C-Order-Tracker/releases/latest
-
-GITHUB_REPO = "KadenPoetschke/WaveMAX-C-C-Order-Tracker"  # Replace with your GitHub repo
-LATEST_RELEASE_URL = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
-DOWNLOAD_DIR = "update"
 
 class VersionChecker(ctk.CTkToplevel):
     def __init__(self, master, *args, **kwargs):
@@ -52,7 +51,7 @@ def check_for_updates(VCWindow):
         latest_release = response.json()
         latest_version = latest_release["tag_name"]
         download_url = latest_release["assets"][0]["browser_download_url"]
-        current_version = "v1.0.2"  # Replace with your current version logic
+        current_version = APP_VERSION
 
         print(f"Latest version: {latest_version}")
         print(f"Current version: {current_version}")
