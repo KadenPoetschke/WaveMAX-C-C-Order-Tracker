@@ -9,6 +9,7 @@ import pickle
 import time
 from new_order import NewOrderForm
 from log_window import LogWindow
+from version import check_for_updates, VersionChecker
 
 # Configure logging
 logging.basicConfig(filename='data\order.log', level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -97,11 +98,13 @@ class OrderTrackerApp(ctk.CTk):
         self.current_orders.append([f"Cents Order #{cents_order}", f"C&C Order #{cc_order}"])
         logging.info(f"New order added: ['Cents Order #{cents_order}', 'C&C Order #{cc_order}']")
         self.update_scrollable_frame()
+        self.save_orders()
 
     def finish_order(self, index):
         logging.info(f"Order picked up: {self.current_orders[index]}")
         del self.current_orders[index]
         self.update_scrollable_frame()
+        self.save_orders()
 
     def update_scrollable_frame(self):
         for widget in self.scrollable_frame.winfo_children():
@@ -117,4 +120,6 @@ class OrderTrackerApp(ctk.CTk):
 
 if __name__ == "__main__":
     app = OrderTrackerApp()
+    VCWindow = VersionChecker(app)
+    check_for_updates(VCWindow)
     app.mainloop()
