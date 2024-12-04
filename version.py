@@ -57,7 +57,7 @@ def check_for_updates(VCWindow):
         print(f"Current version: {current_version}")
         print(f"Download URL: {download_url}")
 
-        if latest_version != current_version:# and latest_version != "v1.0.1" and latest_version != "v1.0.0":
+        if latest_version != current_version and latest_version != "v1.0.1" and latest_version != "v1.0.0":
             text_response = f"New version available: {latest_version}"
             print(text_response)
             VCWindow.update_window(text_response, True, download_url)
