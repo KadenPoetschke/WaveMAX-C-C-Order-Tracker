@@ -4,25 +4,28 @@ import logging
 # Configure logging
 logging.basicConfig(filename='data\order.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
-class LogWindow:
-    def __init__(self, root):
-        self.log_window = ctk.CTkToplevel(root)
-        self.log_window.title("Order Log")
-        self.log_window.geometry("600x500")
-        self.log_window.resizable(False, False)
-        self.log_window.attributes("-topmost", True)
-        self.log_window.after(100, lambda: self.log_window.attributes("-topmost", False))
+class LogWindow(ctk.CTkToplevel):
+    def __init__(self):
+        super().__init__()
+        self.title("Order Log")
+        self.geometry("600x500")
+        self.resizable(False, False)
+        self.attributes("-topmost", True)
+        self.after(200, lambda: self.attributes("-topmost", False))
 
         # Create a title label
-        title_label = ctk.CTkLabel(self.log_window, text="Order Log", font=("Arial", 16))
+        title_label = ctk.CTkLabel(self, text="Order Log", font=("Arial", 16))
         title_label.pack(pady=10)
 
         # Create a scrollable frame
-        self.scrollable_frame = ctk.CTkScrollableFrame(self.log_window, width=580, height=420)
+        self.scrollable_frame = ctk.CTkScrollableFrame(self, width=580, height=420)
         self.scrollable_frame.pack(pady=10, padx=10)
 
         # Read and display the log content
         self.display_log_content()
+
+    def show(self):
+        self.focus()
 
     def read_log_file(self):
         with open('data\order.log', 'r') as file:

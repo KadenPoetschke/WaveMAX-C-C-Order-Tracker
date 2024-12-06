@@ -16,7 +16,7 @@ class VersionChecker(ctk.CTkToplevel):
     def __init__(self, master, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.master = master
-        self.title("Version Checker")
+        self.title("Check for Updates")
         self.geometry("300x100")
         self.resizable(False, False)
         self.attributes("-topmost", True)

@@ -6,7 +6,8 @@ import customtkinter as ctk
 import logging
 import os
 import pickle
-from new_order import NewOrderForm
+from edit_order import EditOrder
+from order_class import Order
 from log_window import LogWindow
 from version import check_for_updates, VersionChecker
 
@@ -18,31 +19,30 @@ logging.basicConfig(filename='data\order.log', level=logging.INFO, format='%(asc
 
 # Set the appearance mode and default color theme
 ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("blue")
+ctk.set_default_color_theme("Theme.json")
 
 class OrderTrackerApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
         self.title(APP_TITLE)
-        self.geometry("600x800")
+        self.geometry("600x750")
         self.resizable(False, False)
+        self.grid_columnconfigure((0, 1), weight=1)
+        self.grid_rowconfigure(2, weight=1)
 
-        # Create a title label
-        title_label = ctk.CTkLabel(self, text=APP_HEADER, font=("Arial", 16))
-        title_label.grid(row=0, column=0, pady=10, columnspan=2, sticky="nsew")
+        title_label = ctk.CTkLabel(self, text=APP_HEADER, font=("Helvetica", 48))
+        title_label.grid(row=0, column=0, pady=(10, 5), columnspan=2)
 
-        # Create a button to open the NewOrderForm window
-        open_form_button = ctk.CTkButton(self, text="New Order", command=self.open_new_order_form)
-        open_form_button.grid(row=1, column=0, pady=10, padx=10, sticky="e")
+        open_form_button = ctk.CTkButton(self, text="  New Order  ", font=("Helvetica", 32), command=self.new_order)
+        open_form_button.grid(row=1, column=0, padx=(30, 10), pady=(5, 5), sticky="ew")
 
-        # Create a button to open the log window
-        open_log_button = ctk.CTkButton(self, text="Order History", command=self.open_log_window)
-        open_log_button.grid(row=1, column=1, pady=10, padx=10, sticky="w")
+        open_log_button = ctk.CTkButton(self, text="Order History", font=("Helvetica", 32), command=self.open_log_window)
+        open_log_button.grid(row=1, column=1, padx=(10, 30), pady=(5, 5), sticky="ew")
 
         # Create a scrollable frame
-        self.scrollable_frame = ctk.CTkScrollableFrame(self, width=560, height=670)
-        self.scrollable_frame.grid(row=2, column=0, pady=10, padx=10, columnspan=2, sticky="nsew")
+        self.scrollable_frame = ctk.CTkScrollableFrame(self)
+        self.scrollable_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=(5, 10), sticky="nsew")
         self.scrollable_frame.grid_columnconfigure((0, 1), weight=1)
 
         # Initialize the orders list
@@ -53,7 +53,7 @@ class OrderTrackerApp(ctk.CTk):
         self.load_orders()
 
         # Create the form window
-        self.form_window = None
+        self.order_window = None
 
         # Create the log window
         self.log_window = None
@@ -82,21 +82,33 @@ class OrderTrackerApp(ctk.CTk):
         self.save_orders()
         self.destroy()
     
-    def open_new_order_form(self):
-        if self.form_window is not None and self.form_window.form_window.winfo_exists():
-            self.form_window.show()
+    def new_order(self):
+        if self.order_window is not None and self.order_window.winfo_exists():
+            self.order_window.show()
         else:
-            self.form_window = NewOrderForm(self, self.add_order)
+            self.order_window = EditOrder(self, True)
+
+    def open_edit_order(self, index):
+        if self.order_window is not None and self.order_window.winfo_exists():
+            self.order_window.show()
+        else:
+            self.order_window = EditOrder(self, False, index)
 
     def open_log_window(self):
-        if self.log_window is not None and self.log_window.log_window.winfo_exists():
+        if self.log_window is not None and self.log_window.winfo_exists():
             self.log_window.show()
         else:
-            self.log_window = LogWindow(self)
+            self.log_window = LogWindow()
 
-    def add_order(self, cents_order, cc_order):
-        self.current_orders.append([f"Cents Order #{cents_order}", f"C&C Order #{cc_order}"])
-        logging.info(f"New order added: ['Cents Order #{cents_order}', 'C&C Order #{cc_order}']")
+    def add_order(self, order: Order):
+        logging.info(f"New order added: ['Cents Order #{order.cents_order}', 'C&C Order #{order.cc_order}']")
+        self.current_orders.append([f"Cents Order #{order.cents_order}", f"C&C Order #{order.cc_order}"])
+        self.update_scrollable_frame()
+        self.save_orders()
+
+    def edit_order(self, index, order: Order):
+        logging.info(f"Order Updated: {self.current_orders[index]} -> ['Cents Order #{order.cents_order}', 'C&C Order #{order.cc_order}']")
+        self.current_orders[index] = [f"Cents Order #{order.cents_order}", f"C&C Order #{order.cc_order}"]
         self.update_scrollable_frame()
         self.save_orders()
 
