@@ -43,7 +43,7 @@ class OrderTrackerApp(ctk.CTk):
         # Create a scrollable frame
         self.scrollable_frame = ctk.CTkScrollableFrame(self)
         self.scrollable_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=(5, 10), sticky="nsew")
-        self.scrollable_frame.grid_columnconfigure((0, 1), weight=1)
+        self.scrollable_frame.grid_columnconfigure(0, weight=1)
 
         # Initialize the orders list
         self.current_orders = []
@@ -123,12 +123,14 @@ class OrderTrackerApp(ctk.CTk):
             widget.destroy()
         for i, order in enumerate(self.current_orders):
             if order:  # Check if the order is not empty
-                cents_number = ctk.CTkLabel(self.scrollable_frame, text=order[0])
-                cents_number.grid(row=i, column=0, pady=5, padx=5, sticky="e")
-                cc_number = ctk.CTkLabel(self.scrollable_frame, text=order[1])
-                cc_number.grid(row=i, column=1, pady=5, padx=5, sticky="w")
-                finish_button = ctk.CTkButton(self.scrollable_frame, text="Order Picked up", command=lambda i=i: self.finish_order(i))
-                finish_button.grid(row=i, column=2, pady=5, padx=5, sticky="e")
+                # cents_number = ctk.CTkLabel(self.scrollable_frame, text=order[0])
+                # cents_number.grid(row=i, column=0, pady=5, padx=5, sticky="e")
+                # cc_number = ctk.CTkLabel(self.scrollable_frame, text=order[1])
+                # cc_number.grid(row=i, column=1, pady=5, padx=5, sticky="w")
+                # finish_button = ctk.CTkButton(self.scrollable_frame, text="Order Picked up", command=lambda i=i: self.finish_order(i))
+                # finish_button.grid(row=i, column=2, pady=5, padx=5, sticky="e")
+                order_button = ctk.CTkButton(self.scrollable_frame, text=f"{order[0]} | {order[1]}", command=lambda i=i: self.open_edit_order(i))
+                order_button.grid(row=i, column=0, pady=5, padx=5, sticky="ew")
 
 if __name__ == "__main__":
     app = OrderTrackerApp()

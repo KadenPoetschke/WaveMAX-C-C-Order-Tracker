@@ -32,6 +32,8 @@ class EditOrder(ctk.CTkToplevel):
         else:
             self.button_text = "Edit Order"
             self.button_command = self.edit_order
+            self.cents_entry.configure(placeholder_text=self.master.current_orders[index][0].split("#")[1])
+            self.cc_entry.configure(placeholder_text=self.master.current_orders[index][1].split("#")[1])
 
         self.set_order_button = ctk.CTkButton(self, text=self.button_text, command=self.button_command)
         self.set_order_button.pack(pady=5)
@@ -46,4 +48,7 @@ class EditOrder(ctk.CTkToplevel):
         self.cc_entry.delete(0, "end")
 
     def edit_order(self):
-        self.master.edit_order(self.index)
+        order = Order(self.cents_entry.get(), self.cc_entry.get())
+        self.master.edit_order(self.index, order)
+        self.cents_entry.delete(0, "end")
+        self.cc_entry.delete(0, "end")
