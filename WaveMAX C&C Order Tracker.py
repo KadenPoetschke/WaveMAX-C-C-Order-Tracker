@@ -49,14 +49,14 @@ class OrderTrackerApp(ctk.CTk):
         self.current_orders = []
         self.all_orders = []
 
-        # Load orders from file
-        self.load_orders()
-
         # Create the form window
         self.order_window = None
 
         # Create the log window
         self.log_window = None
+
+        # Load orders from file
+        self.load_orders()
 
         # Initial population of the scrollable frame
         self.update_scrollable_frame()
@@ -102,21 +102,22 @@ class OrderTrackerApp(ctk.CTk):
 
     def add_order(self, order: Order):
         logging.info(f"New order added: ['Cents Order #{order.cents_order}', 'C&C Order #{order.cc_order}']")
-        self.current_orders.append([f"Cents Order #{order.cents_order}", f"C&C Order #{order.cc_order}"])
+        self.current_orders.append([f"Cents Order #{order.cents_order}", f"C&C Order #{order.cc_order}", order])
+        self.all_orders.append(order)
         self.update_scrollable_frame()
         self.save_orders()
 
     def edit_order(self, index, order: Order):
         logging.info(f"Order Updated: {self.current_orders[index]} -> ['Cents Order #{order.cents_order}', 'C&C Order #{order.cc_order}']")
-        self.current_orders[index] = [f"Cents Order #{order.cents_order}", f"C&C Order #{order.cc_order}"]
+        self.current_orders[index] = [f"Cents Order #{order.cents_order}", f"C&C Order #{order.cc_order}", order]
         self.update_scrollable_frame()
         self.save_orders()
 
-    def finish_order(self, index):
-        logging.info(f"Order picked up: {self.current_orders[index]}")
-        del self.current_orders[index]
-        self.update_scrollable_frame()
-        self.save_orders()
+    # def finish_order(self, index):
+    #     logging.info(f"Order picked up: {self.current_orders[index]}")
+    #     del self.current_orders[index]
+    #     self.update_scrollable_frame()
+    #     self.save_orders()
 
     def update_scrollable_frame(self):
         for widget in self.scrollable_frame.winfo_children():
@@ -129,7 +130,7 @@ class OrderTrackerApp(ctk.CTk):
                 # cc_number.grid(row=i, column=1, pady=5, padx=5, sticky="w")
                 # finish_button = ctk.CTkButton(self.scrollable_frame, text="Order Picked up", command=lambda i=i: self.finish_order(i))
                 # finish_button.grid(row=i, column=2, pady=5, padx=5, sticky="e")
-                order_button = ctk.CTkButton(self.scrollable_frame, text=f"{order[0]} | {order[1]}", command=lambda i=i: self.open_edit_order(i))
+                order_button = ctk.CTkButton(self.scrollable_frame, text=f"{order[0].strip()} | {order[1].strip()}", command=lambda i=i: self.open_edit_order(i), fg_color="transparent", hover_color="#4B4B4B")
                 order_button.grid(row=i, column=0, pady=5, padx=5, sticky="ew")
 
 if __name__ == "__main__":
