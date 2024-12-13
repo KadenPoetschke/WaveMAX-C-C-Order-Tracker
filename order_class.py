@@ -8,7 +8,7 @@ class Order:
             cc_order: str = None, 
             notes: str = "", 
             detergent: str = "Regular", 
-            addons: List[str] = [], 
+            addons: List[int] = [], 
             wash_temp: str = "Cold", 
             dry_temp: str = "Med", 
             due_date: date = None,
